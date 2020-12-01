@@ -1,16 +1,37 @@
 const fs = require('fs')
 const chalk = require('chalk')
+const { get } = require('http')
 
-const getNotes = function(){
+const getNote = (title) => {
+    const notes = loadNotes()
+    const note = notes.find((note) => {
+        return note.title===title
+    })
+    if(note)
+    {
+        console.log(chalk.blue.inverse(note.title) + "\n" + note.body)
+    }
+    else
+    {
+        console.log(chalk.red.inverse('No note found!'))
+    }
+}
 
+
+const listNotes = () => {
+    const notes = loadNotes()
+    console.log(chalk.blue.inverse('Your notes \n'))
+    notes.forEach((note) => {
+        console.log(note.title + "\n")
+    });
 }
 
 const addNote = (title,body)=>{
     const notes = loadNotes()
-    const duplicateNotes = notes.filter((note) => note.title === title)
-    // const duplicateNotes = notes.filter(function(note){
-    //     return note.title === title
-    if(duplicateNotes.length===0)
+    //const duplicateNotes = notes.filter((note) => note.title === title)
+    const duplicateNote = notes.find((note) => note.title===title)//stops the search during the first hit whereas filter iterates completely
+
+    if(!duplicateNote)
     {
         notes.push({
             title:title,
@@ -61,8 +82,9 @@ const deleteNote = (title) => {
 
 module.exports = {
     addNote: addNote,
-    getNotes: getNotes,
-    deleteNote: deleteNote
+    listNotes: listNotes,
+    deleteNote: deleteNote,
+    getNote: getNote
 
 }
 // console.log('notes.js')

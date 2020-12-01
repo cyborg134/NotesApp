@@ -34,7 +34,29 @@ yargs.command({
         notes.deleteNote(argv.title)
     }
 })
-    
+
+yargs.command({
+    command: 'listNotes',
+    describe: 'list all notes',
+    handler(argv){
+        notes.listNotes()
+    }
+})
+
+yargs.command({
+    command: 'getNote',
+    describe: 'list the selected note',
+    builder: {
+        title:{
+            describe: 'Note title',
+            demandOption: true,
+            type: 'string'
+        }
+    },
+    handler(argv){
+        notes.getNote(argv.title)
+    }
+})
 
 
 yargs.parse()
